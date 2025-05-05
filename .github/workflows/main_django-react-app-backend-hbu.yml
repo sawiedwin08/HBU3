@@ -32,7 +32,7 @@ jobs:
       
       - name: Install dependencies
         run: 
-          cd backend_app
+          cd "backend_app"
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
