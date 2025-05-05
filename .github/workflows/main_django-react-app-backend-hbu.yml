@@ -27,7 +27,6 @@ jobs:
       - name: Instalar dependencias
         run: |
           python -m venv backend_app/venv
-          python -m pip install --upgrade pip
           pip install -r backend_app/requirements.txt
 
       - name: Recopilar archivos estáticos
