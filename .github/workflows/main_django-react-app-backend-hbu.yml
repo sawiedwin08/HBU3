@@ -33,10 +33,10 @@ jobs:
       - name: Install dependencies
         run: 
           cd backend_app
-          pyhton -m pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Collect static dependencies
+      - name: Collect static files
         run: 
           cd backend_app
           pyhton manage.py collectstatic --noinput
