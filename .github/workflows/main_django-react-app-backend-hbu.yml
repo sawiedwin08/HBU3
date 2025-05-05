@@ -25,9 +25,12 @@ jobs:
           python-version: '3.11'
 
       - name: Instalar dependencias
-        run: |
-          python -m venv backend_app/venv
-          pip install -r backend_app/requirements.txt
+  run: |
+    python -m venv backend_app/venv
+    source backend_app/venv/bin/activate
+    pip install --upgrade pip
+    pip install -r backend_app/requirements.txt
+
 
       - name: Recopilar archivos estáticos
         run: |
