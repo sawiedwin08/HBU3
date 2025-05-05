@@ -14,47 +14,36 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read # Esto es necesario para actions/checkout
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python version
+      - name: Configurar versión de Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Create and start virtual environment
+      - name: Instalar dependencias
+        run: |
+          python -m venv backend_app/venv
+          python -m pip install --upgrade pip
+          pip install -r backend_app/requirements.txt
+
+      - name: Recopilar archivos estáticos
+        run: |
+          python backend_app/manage.py collectstatic --noinput
+
+      - name: Crear archivo ZIP para despliegue
         run: |
           cd backend_app
-          python -m venv venv
-          source venv/bin/activate
-      
-      - name: Install dependencies
-        run: 
-          cd "backend_app"
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          zip -r ../release.zip ./*
 
-      - name: Collect static files
-        run: 
-          cd backend_app
-          pyhton manage.py collectstatic --noinput
-
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
-      
-      - name: Zip artifact for deployment
-        run: 
-          cd backend_app
-          zip release.zip ./* -r
-
-      - name: Upload artifact for deployment jobs
+      - name: Subir artefacto para trabajos de despliegue
         uses: actions/upload-artifact@v4
         with:
           name: python-app
-          path: |
-            backend_app/release.zip
-            !venv/
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -89,4 +78,3 @@ jobs:
         with:
           app-name: 'django-react-app-backend-hbu'
           slot-name: 'Production'
-          
